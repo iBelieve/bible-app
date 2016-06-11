@@ -1,0 +1,3 @@
+[submodule "vendor/io.papyros.material"]
+	path = vendor/io.papyros.material
+	url = git@github.com:papyros/qml-material.git
