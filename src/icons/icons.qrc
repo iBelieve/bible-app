@@ -1,0 +1,13 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+
+<qresource prefix="/icons/action">
+	<file alias="search.svg">action_search.svg</file>
+	<file alias="settings.svg">action_settings.svg</file>
+</qresource>
+
+<qresource prefix="/icons/maps">
+	<file alias="place.svg">maps_place.svg</file>
+</qresource>
+
+</RCC>

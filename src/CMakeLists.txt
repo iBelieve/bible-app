@@ -1,4 +1,9 @@
-file(GLOB_RECURSE SOURCES *.cpp *.h qml/qml.qrc)
+file(GLOB_RECURSE SOURCES *.cpp *.h)
+
+set(SOURCES ${SOURCES}
+            assets/assets.qrc
+            icons/icons.qrc
+            qml/qml.qrc)
 
 include(../vendor/CMakeLists.txt)
 
