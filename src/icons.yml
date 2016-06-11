@@ -1,4 +1,7 @@
 icons:
+  - action/home
+  - action/list
   - action/search
   - action/settings
   - maps/place
+  - social/school

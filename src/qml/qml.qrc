@@ -2,6 +2,8 @@
 <RCC version="1.0">
 
 <qresource>
+	<file>components/BibleView.qml</file>
+	<file>components/Placeholder.qml</file>
 	<file>main.qml</file>
 </qresource>
 

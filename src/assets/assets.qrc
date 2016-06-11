@@ -2,6 +2,7 @@
 <RCC version="1.0">
 
 <qresource prefix="/icons">
+	<file>book-open-page.svg</file>
 	<file>book-open.svg</file>
 </qresource>
 

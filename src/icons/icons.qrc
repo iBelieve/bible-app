@@ -2,12 +2,18 @@
 <RCC version="1.0">
 
 <qresource prefix="/icons/action">
+	<file alias="home.svg">action_home.svg</file>
+	<file alias="list.svg">action_list.svg</file>
 	<file alias="search.svg">action_search.svg</file>
 	<file alias="settings.svg">action_settings.svg</file>
 </qresource>
 
 <qresource prefix="/icons/maps">
 	<file alias="place.svg">maps_place.svg</file>
+</qresource>
+
+<qresource prefix="/icons/social">
+	<file alias="school.svg">social_school.svg</file>
 </qresource>
 
 </RCC>
