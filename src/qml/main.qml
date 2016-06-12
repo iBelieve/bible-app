@@ -1,8 +1,9 @@
 import QtQuick 2.0
 import Material 0.3
 import Material.ListItems 0.1 as ListItem
-import "components"
 import Bible 0.1
+import "components"
+import "ui"
 
 ApplicationWindow {
     id: app
@@ -16,6 +17,8 @@ ApplicationWindow {
     visible: true
 
     Component.onCompleted: BibleManager.confirmedPermission = true
+
+    property Bible bible: BibleManager.getBible('KJV')
 
     initialPage: TabbedPage {
         title: "Bible"
@@ -44,10 +47,7 @@ ApplicationWindow {
             }
         ]
 
-        Tab {
-            iconName: 'action/home'
-            title: "Home"
-        }
+        HomeTab {}
 
         Tab {
             title: "Read"
