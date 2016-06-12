@@ -11,7 +11,11 @@ add_executable(bible-app ${SOURCES} ${VENDOR_SOURCES})
 target_link_libraries(bible-app
                       Qt5::Core
                       Qt5::Qml
-                      Qt5::Quick)
+                      Qt5::Quick
+                      Qt5::Concurrent
+                      ${SWORD_LIBRARIES})
+
+include_directories(${SWORD_INCLUDE_DIRS})
 
 set_target_properties(bible-app PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/data/Info.plist)
 

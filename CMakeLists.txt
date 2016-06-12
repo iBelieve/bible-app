@@ -39,7 +39,10 @@ set(QT_MIN_VERSION "5.4.0")
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
              Core
              Qml
-             Quick)
+             Quick
+             Concurrent)
+
+find_package(SWORD REQUIRED)
 
 if(UNIX)
     if(APPLE)
