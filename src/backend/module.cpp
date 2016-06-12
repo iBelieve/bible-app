@@ -28,6 +28,7 @@
 #include <QDebug>
 #include <QStandardPaths>
 #include <QDir>
+#include <QCoreApplication>
 
 #include <sword/swmgr.h>
 
@@ -39,6 +40,8 @@ Module::Module(sword::SWModule *module, bool installed, BibleManager *parent) :
 {
     m_module = module;
     m_manager = parent;
+
+    moveToThread(QCoreApplication::instance()->thread());
 
     setInstalled(installed);
     setName(module->getName());

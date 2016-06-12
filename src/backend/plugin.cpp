@@ -16,7 +16,7 @@ public:
         // qmlRegisterUncreatableType<BibleApp>(uri, 1, 0, "App", "Main utilities for the app");
         // qmlRegisterType<BibleChapter>(uri, 1, 0, "BibleChapter");
         // qmlRegisterType<SearchTask>(uri, 1, 0, "SearchTask");
-        qmlRegisterType<BibleManager>(uri, 0, 1, "BibleManager");
+        qmlRegisterSingletonType<BibleManager>(uri, 0, 1, "BibleManager", BibleManager::qmlSingleton);
         qmlRegisterType<Bible>(uri, 0, 1, "Bible");
         qmlRegisterUncreatableType<Progress>(uri, 0, 1, "Progress", "Will be returned by Bible methods");
     }

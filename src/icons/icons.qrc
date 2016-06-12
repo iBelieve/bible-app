@@ -12,6 +12,14 @@
 	<file alias="place.svg">maps_place.svg</file>
 </qresource>
 
+<qresource prefix="/icons/navigation">
+	<file alias="check.svg">navigation_check.svg</file>
+</qresource>
+
+<qresource prefix="/icons/file">
+	<file alias="cloud_done.svg">file_cloud_done.svg</file>
+</qresource>
+
 <qresource prefix="/icons/social">
 	<file alias="school.svg">social_school.svg</file>
 </qresource>

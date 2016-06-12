@@ -83,23 +83,19 @@ BibleManager::~BibleManager() {
 Progress *BibleManager::refresh(bool force) {
     setAvailableBibles(QVariantList());
 
-    if (force || m_installManager->sources.size() == 0) {
-        Progress *progress = Progress::begin("Refreshing sources...");
+    Progress *progress = Progress::begin("Refreshing sources...");
 
-        Promise::when([this, progress] {
+    Promise::when([this, force, progress] {
+        if (force || m_installManager->sources.size() == 0) {
             loadRemoteSources(progress);
-        }).done([this, progress] {
-            loadFromRemoteSources();
+        }
 
-            progress->finish("Done!");
-        });
-
-        return progress;
-    } else {
         loadFromRemoteSources();
 
-        return Progress::done();
-    }
+        progress->finish("Done!");
+    });
+
+    return progress;
 }
 
 Bible *BibleManager::getBible(const QString &name)
@@ -168,6 +164,9 @@ void BibleManager::loadFromRemoteSources() {
                 continue;
 
             bool installed = !(modPair.second & InstallMgr::MODSTAT_NEW);
+
+            // NOTE: Bible will automatically be moved to the main thread
+            // as this is run in the background
             Module *bible = new Module(module, installed, this);
             bible->setSource(pair.second);
 

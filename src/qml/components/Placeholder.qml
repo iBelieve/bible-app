@@ -11,12 +11,30 @@ ColumnLayout {
     property alias iconSource: icon.source
     property alias text: textLabel.text
     property alias subText: subTextLabel.text
+    property bool busy: progress ? progress.busy : false
+
+    property var progress
+
+    onBusyChanged: {
+        if (busy == false && progress)
+            finished()
+    }
+
+    visible: !progress || busy
+
+    signal finished()
 
     Icon {
         id: icon
         Layout.alignment: Qt.AlignHCenter
         size: 64
         color: Theme.light.disabledColor
+        visible: !busy
+    }
+
+    ProgressCircle {
+    Layout.alignment: Qt.AlignHCenter
+        visible: busy
     }
 
     Item {
@@ -32,6 +50,7 @@ ColumnLayout {
         style: "title"
         color: Theme.light.disabledColor
         horizontalAlignment: Text.AlignHCenter
+        text: progress ? progress.status : ""
     }
 
     Label {

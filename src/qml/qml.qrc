@@ -5,6 +5,7 @@
 	<file>components/BibleView.qml</file>
 	<file>components/Placeholder.qml</file>
 	<file>main.qml</file>
+	<file>ui/SettingsPage.qml</file>
 </qresource>
 
 </RCC>

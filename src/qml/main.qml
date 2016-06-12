@@ -15,16 +15,7 @@ ApplicationWindow {
 
     visible: true
 
-    property var progress
-
-    BibleManager {
-        id: bibleManager
-
-        Component.onCompleted: {
-            confirmedPermission = true;
-            progress = refresh(true);
-        }
-    }
+    Component.onCompleted: BibleManager.confirmedPermission = true
 
     initialPage: TabbedPage {
         title: "Bible"
@@ -48,27 +39,14 @@ ApplicationWindow {
             Action {
                 iconName: 'action/settings'
                 text: 'Settings'
+
+                onTriggered: pageStack.push(Qt.resolvedUrl("ui/SettingsPage.qml"))
             }
         ]
 
         Tab {
             iconName: 'action/home'
             title: "Home"
-
-            Item {
-                ListView {
-                    anchors.fill: parent
-                    model: bibleManager.availableBibles
-                    delegate: ListItem.Standard {
-                        text: modelData.name
-                    }
-                }
-
-                ProgressCircle {
-                    anchors.centerIn: parent
-                    visible: app.progress.busy
-                }
-            }
         }
 
         Tab {

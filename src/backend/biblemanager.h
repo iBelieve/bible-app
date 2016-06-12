@@ -25,6 +25,8 @@
 
 #include <QObject>
 
+#include <QQmlEngine>
+
 #include <sword/swmgr.h>
 #include <sword/swmodule.h>
 #include <sword/installmgr.h>
@@ -83,6 +85,10 @@ public slots:
             m_availableBibles = arg;
             emit availableBiblesChanged(arg);
         }
+    }
+
+    static QObject *qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
+        return new BibleManager();
     }
 
 protected slots:
