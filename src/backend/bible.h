@@ -45,7 +45,7 @@ class Bible : public Module
 public:
     explicit Bible(QObject *parent = nullptr) : Module(parent) {}
 
-    explicit Bible(sword::SWModule *module, BibleManager *parent);
+    explicit Bible(sword::SWModule *module, bool installed, BibleManager *parent);
 
     ~Bible() {
         qDebug() << "Deleted!";

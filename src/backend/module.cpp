@@ -34,32 +34,25 @@
 #include "biblemanager.h"
 #include "promise.h"
 
-Module::Module(sword::SWModule *module, BibleManager *parent) :
+Module::Module(sword::SWModule *module, bool installed, BibleManager *parent) :
     QObject()
 {
     m_module = module;
     m_manager = parent;
+
+    setInstalled(installed);
+    setName(module->getName());
+    setDescription(module->getDescription());
+    setLanguage(module->getLanguage());
 }
 
-void Module::install()
+Progress *Module::install()
 {
-    Promise::when([this] {
-        m_manager->installModule(source(), name());
-    }).done([this] {
-        setInstalled(true);
-
-        m_manager->loadInstalledBibles();
-    });
+    return m_manager->installModule(this);
 }
 
-void Module::uninstall()
+Progress *Module::uninstall()
 {
-    Promise::when([this] {
-        // TODO: Finish this
-        // m_manager->uninstallModule(source(), name());
-    }).done([this] {
-        setInstalled(false);
-
-        m_manager->loadInstalledBibles();
-    });
+    // return m_manager->uninstallModule(this);
+    return nullptr;
 }

@@ -72,14 +72,12 @@ BibleManager::BibleManager(QObject *parent) :
 
     m_installManager = new CustomInstallManager(this, dataPath + "/remote_sources");
 
-    qDebug() << "Loading bibles...";
     this->loadInstalledBibles();
-
-    qDebug() << "Bibles loaded";
 }
 
 BibleManager::~BibleManager() {
     delete m_installManager;
+    delete m_manager;
 }
 
 Progress *BibleManager::refresh(bool force) {
@@ -111,39 +109,30 @@ Bible *BibleManager::getBible(const QString &name)
     if (module == nullptr)
         return nullptr;
 
-    Bible *bible = new Bible(module, this);
-    bible->setInstalled(true);
-    bible->setName(module->getName());
-    bible->setDescription(module->getDescription());
-    bible->setLanguage(module->getLanguage());
-
-    return bible;
+    return new Bible(module, true, this);
 }
 
-void BibleManager::installModule(QString sourceName, QString moduleName) {
-    // Progress *progress = Progress::begin("Installing " + moduleName);
+Progress *BibleManager::installModule(Module *module) {
+    Progress *progress = Progress::begin("Installing " + module->name());
 
-    InstallSourceMap::iterator source = m_installManager->sources.find(qPrintable(sourceName));
-    if (source == m_installManager->sources.end()) {
-        qWarning() << "Couldn't find remote source" << sourceName;
-        return;
-    }
-    InstallSource *is = source->second;
-    SWMgr *rmgr = is->getMgr();
-    SWModule *module;
-    ModMap::iterator it = rmgr->Modules.find(qPrintable(moduleName));
-    if (it == rmgr->Modules.end()) {
-        qWarning() << "Couldn't find module in remote source" << moduleName;
-        return;
-    }
-    module = it->second;
+    Promise::when([this, module, progress] {
+        InstallSource *source = module->source();
+        int error = m_installManager->installModule(m_manager, 0, qPrintable(module->name()),
+                                                    source);
 
-    int error = m_installManager->installModule(m_manager, 0, module->getName(), is);
-    if (error) {
-        qDebug() << "Error installing module: [" << module->getName() << "] (write permissions?)\n";
-    } else {
-        qDebug() << "Installed module: [" << module->getName() << "]" << m_manager->prefixPath;
-    }
+        if (error) {
+            qDebug() << "Error installing module: [" << module->name() << "] (write permissions?)\n";
+
+            progress->finish("Failure :(");
+        } else {
+            module->setInstalled(true);
+            progress->finish("Installed!");
+        }
+    }).done([this] {
+        loadInstalledBibles();
+    });
+
+    return progress;
 }
 
 void BibleManager::loadRemoteSources(Progress *progress) {
@@ -178,12 +167,9 @@ void BibleManager::loadFromRemoteSources() {
             if (strcmp(module->getType(), "Biblical Texts") != 0)
                 continue;
 
-            Module *bible = new Module(module, this);
-            bible->setInstalled(!(modPair.second & InstallMgr::MODSTAT_NEW));
-            bible->setName(module->getName());
-            bible->setDescription(module->getDescription());
-            bible->setLanguage(module->getLanguage());
-            bible->setSource(QString(pair.second->caption));
+            bool installed = !(modPair.second & InstallMgr::MODSTAT_NEW);
+            Module *bible = new Module(module, installed, this);
+            bible->setSource(pair.second);
 
             list.append(QVariant::fromValue(bible));
         }
@@ -203,20 +189,13 @@ void BibleManager::loadInstalledBibles() {
 
     for (it = modules.begin(); it != modules.end(); it++) {
         module = (*it).second;
+
         if (!strcmp(module->getType(), "Biblical Texts")) {
-
-            Bible *bible = new Bible(module, this);
-            bible->setInstalled(true);
-            bible->setName(module->getName());
-            bible->setDescription(module->getDescription());
-            bible->setLanguage(module->getLanguage());
-
-            qDebug() << bible->books();
+            Bible *bible = new Bible(module, true, this);
 
             list.append(QVariant::fromValue(bible));
-
         } else if (!strcmp(module->getType(), "Commentaries")) {
-            // do RenderTextsomething with module
+            // do something with module
         } else if (!strcmp(module->getType(), "Lexicons / Dictionaries")) {
             // do something with module
         }

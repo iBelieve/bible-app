@@ -28,6 +28,9 @@
 
 #include <sword/swmodule.h>
 #include <sword/swmgr.h>
+#include <sword/installmgr.h>
+
+#include "progress.h"
 
 class BibleManager;
 
@@ -38,34 +41,35 @@ class Module : public QObject
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
     Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
     Q_PROPERTY(QString language READ language NOTIFY languageChanged)
-    Q_PROPERTY(QString source READ source NOTIFY sourceChanged)
+    Q_PROPERTY(QString sourceName READ sourceName NOTIFY sourceNameChanged)
     Q_PROPERTY(bool installed READ installed NOTIFY installedChanged)
 
 public:
     explicit Module(QObject *parent = nullptr) : QObject(parent) {}
 
-    explicit Module(sword::SWModule *module, BibleManager *parent);
+    explicit Module(sword::SWModule *module, bool installed, BibleManager *parent);
 
     QString name() const { return m_name; }
     QString description() const { return m_description; }
     QString language() const { return m_language; }
-    QString source() const { return m_source; }
+    QString sourceName() const { return QString(m_source->caption); }
 
     bool installed() const { return m_installed; }
 
     sword::SWModule *module() const { return m_module; }
+    sword::InstallSource *source() const { return m_source; }
 
 signals:
     void nameChanged(QString arg);
     void descriptionChanged(QString arg);
     void languageChanged(QString arg);
-    void sourceChanged(QString arg);
+    void sourceNameChanged(QString arg);
 
     void installedChanged(bool arg);
 
 public slots:
-    void install();
-    void uninstall();
+    Progress *install();
+    Progress *uninstall();
 
     void setName(QString arg)
     {
@@ -97,11 +101,11 @@ public slots:
         }
     }
 
-    void setSource(QString arg)
+    void setSource(sword::InstallSource *source)
     {
-        if (m_source != arg) {
-            m_source = arg;
-            emit sourceChanged(arg);
+        if (m_source != source) {
+            m_source = source;
+            emit sourceNameChanged(QString(source->caption));
         }
     }
 
@@ -114,7 +118,7 @@ private:
     QString m_name = "";
     QString m_description = "";
     QString m_language = "";
-    QString m_source = "";
+    sword::InstallSource *m_source = nullptr;
 
     bool m_installed = false;
 };

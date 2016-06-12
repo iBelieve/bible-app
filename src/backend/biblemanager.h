@@ -63,7 +63,7 @@ signals:
     void availableBiblesChanged(QVariantList arg);
 
 public slots:
-    void installModule(QString source, QString module);
+    Progress *installModule(Module *module);
 
     Progress *refresh(bool force = false);
 

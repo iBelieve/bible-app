@@ -35,8 +35,8 @@
 
 using namespace sword;
 
-Bible::Bible(SWModule *module, BibleManager *parent)
-    : Module(module, parent)
+Bible::Bible(SWModule *module, bool installed, BibleManager *parent)
+    : Module(module, installed, parent)
 {
     sword::GBFRedLetterWords *option = new sword::GBFRedLetterWords();
     option->setOptionValue("On");
