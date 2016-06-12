@@ -23,7 +23,7 @@ Tab {
 
                 anchors {
                     fill: parent
-                    margins: 8
+                    margins: 16
                 }
 
                 spacing: 8

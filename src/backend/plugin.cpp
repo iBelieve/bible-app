@@ -2,8 +2,7 @@
 #include <QtQml/QQmlContext>
 
 #include "bible.h"
-// #include "bibleapp.h"
-// #include "biblechapter.h"
+#include "biblechapter.h"
 #include "biblemanager.h"
 // #include "searchtask.h"
 #include "progress.h"
@@ -13,8 +12,7 @@ class BibleRegisterHelper {
 public:
     BibleRegisterHelper(const char *uri) {
         // @uri uBible
-        // qmlRegisterUncreatableType<BibleApp>(uri, 1, 0, "App", "Main utilities for the app");
-        // qmlRegisterType<BibleChapter>(uri, 1, 0, "BibleChapter");
+        qmlRegisterType<BibleChapter>(uri, 0, 1, "BibleChapter");
         // qmlRegisterType<SearchTask>(uri, 1, 0, "SearchTask");
         qmlRegisterSingletonType<BibleManager>(uri, 0, 1, "BibleManager", BibleManager::qmlSingleton);
         qmlRegisterType<Bible>(uri, 0, 1, "Bible");

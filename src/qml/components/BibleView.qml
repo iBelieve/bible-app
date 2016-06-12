@@ -22,11 +22,58 @@
  */
 
 import QtQuick 2.0
+import Material 0.1
+import Bible 0.1
 
-Item {
+Rectangle {
+    color: BibleManager.installedBibles.length == 0 ? "transparent" : "white"
+
+    BibleChapter {
+        id: bibleChapter
+
+        bible: app.bible
+    }
+
     Placeholder {
         iconName: "book-open"
         text: "No Bibles installed yet"
         subText: "Open the Bible manager from Settings to install a Bible."
+        visible: BibleManager.installedBibles.length == 0
+    }
+
+    ListView {
+        id: list
+
+        anchors {
+            top: parent.top
+            bottom: parent.bottom
+            horizontalCenter: parent.horizontalCenter
+        }
+
+        width: Math.min(600, parent.width)
+
+        topMargin: 16
+        bottomMargin: 16
+
+        model: bibleChapter
+        snapMode: ListView.SnapToItem
+
+        header: Label {
+            height: implicitHeight + 16
+
+            anchors {
+                left: parent.left
+                right: parent.right
+                margins: 40
+            }
+
+            verticalAlignment: Text.AlignVCenter
+            style: "title"
+            text: bibleChapter.book + " " + bibleChapter.chapter
+        }
+
+        delegate: VerseDelegate {
+
+        }
     }
 }
